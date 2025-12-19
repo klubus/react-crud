@@ -5,18 +5,25 @@ import About from './components/pages/About/About.js';
 import SinglePost from './components/pages/SinglePost/SinglePost.js';
 import AddPost from './components/pages/AddPost/AddPost.js';
 import EditPost from './components/pages/EditPost/EditPost.js';
+import Header from './components/views/Header/Header.js';
+import Footer from './components/views/Footer/Footer.js';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/post/:id" element={<SinglePost />} />
-        <Route path="/post/add" element={<AddPost />} />
-        <Route path="/post/edit/:id" element={<EditPost />} />
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+      <Container>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/post/:id" element={<SinglePost />} />
+          <Route path="/post/add" element={<AddPost />} />
+          <Route path="/post/edit/:id" element={<EditPost />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+        <Footer />
+      </Container>
     </div>
   );
 }
