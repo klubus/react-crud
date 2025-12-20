@@ -33,7 +33,7 @@ const Home = () => {
                 </Card.Body>
 
                 <Card.Footer className="bg-white border-0">
-                  <Button as={Link} to={`/posts/${post.id}`} variant="primary">
+                  <Button as={Link} to={`/post/${post.id}`} variant="primary">
                     Read more
                   </Button>
                 </Card.Footer>
