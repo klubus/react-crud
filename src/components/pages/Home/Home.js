@@ -12,7 +12,12 @@ const Home = () => {
 
   return (
     <section>
-      <h2 className="m-4">All posts</h2>
+      <div className="d-flex justify-content-between align-items-center">
+        <h2 className="m-4">All posts</h2>
+        <Button as={Link} to={`/post/add`} variant="outline-info">
+          Add post
+        </Button>
+      </div>
       <Container>
         <Row>
           {posts.map((post) => (
