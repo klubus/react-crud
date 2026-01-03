@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SinglePost = () => {
   const dispatch = useDispatch();
@@ -57,7 +58,13 @@ const SinglePost = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <h5>{postData.title}</h5>
                 <div>
-                  <button className="btn btn-outline-info me-2">Edit</button>
+                  <Button
+                    as={Link}
+                    to={`/post/edit/${postData.id}`}
+                    variant="outline-info me-2"
+                  >
+                    Edit
+                  </Button>
                   <button
                     className="btn btn-outline-danger"
                     onClick={showDeleteModal}
