@@ -35,6 +35,9 @@ const Home = () => {
                       <strong>Published:</strong>{' '}
                       {dateToStr(post.publishedDate)}
                     </p>
+                    <p className="mb-1">
+                      <strong>Category:</strong> {post.category}
+                    </p>
                     <p className="text-muted">{post.shortDescription}</p>
                   </Card.Text>
                 </Card.Body>

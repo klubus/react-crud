@@ -6,6 +6,8 @@ import 'react-quill-new/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
+import { getAllCategories } from '../../../redux/categoriesRedux';
+import { useSelector } from 'react-redux';
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -14,11 +16,13 @@ const PostForm = ({ action, actionText, ...props }) => {
   const [shortDescription, setShortDescription] = useState(
     props.shortDescription || ''
   );
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(props.content || '');
+  const [category, setCategory] = useState(props.category || '');
   const [contentError, setContentError] = useState();
   const [dateError, setDateError] = useState();
 
   const isEmpty = content.replace(/<(.|\n)*?>/g, '').trim() === '';
+  const categories = useSelector(getAllCategories);
 
   const handleSubmit = () => {
     setContentError(isEmpty);
@@ -31,6 +35,7 @@ const PostForm = ({ action, actionText, ...props }) => {
         publishedDate,
         shortDescription,
         content,
+        category,
       });
     }
   };
@@ -85,6 +90,22 @@ const PostForm = ({ action, actionText, ...props }) => {
             Published date can't be empty
           </small>
         )}
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCategory">
+        <Form.Label>Category</Form.Label>
+        <Form.Select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="" disabled>
+            Select category
+          </option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicShortDescription">
         <Form.Label>Short description</Form.Label>
