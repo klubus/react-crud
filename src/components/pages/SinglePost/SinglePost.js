@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import dateToStr from '../../../utils/dateToStr';
 
 const SinglePost = () => {
   const dispatch = useDispatch();
@@ -80,9 +81,9 @@ const SinglePost = () => {
                 <strong>Author:</strong> {postData.author}
               </p>
               <p className="mb-2">
-                <strong>Published:</strong> {postData.publishedDate}
+                <strong>Published:</strong> {dateToStr(postData.publishedDate)}
               </p>
-              <p className="text-muted">{postData.content}</p>
+              <p dangerouslySetInnerHTML={{ __html: postData.content }} />{' '}
             </Card.Text>
           </Card.Body>
         </Card>

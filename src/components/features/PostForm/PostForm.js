@@ -1,6 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -13,7 +17,13 @@ const PostForm = ({ action, actionText, ...props }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    action({ title, author, publishedDate, shortDescription, content });
+    action({
+      title,
+      author,
+      publishedDate,
+      shortDescription,
+      content,
+    });
   };
 
   return (
@@ -38,11 +48,10 @@ const PostForm = ({ action, actionText, ...props }) => {
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPublished">
         <Form.Label>Published</Form.Label>
-        <Form.Control
-          type="text"
-          value={publishedDate}
-          placeholder="Enter date"
-          onChange={(e) => setPublishedDate(e.target.value)}
+        <br></br>
+        <DatePicker
+          selected={publishedDate}
+          onChange={(date) => setPublishedDate(date)}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicShortDescription">
@@ -56,14 +65,8 @@ const PostForm = ({ action, actionText, ...props }) => {
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicMainComment">
-        <Form.Label>Main comment</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={10}
-          placeholder="Leave a comment here"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
+        <Form.Label>Main content</Form.Label>
+        <ReactQuill theme="snow" value={content} onChange={setContent} />
       </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}

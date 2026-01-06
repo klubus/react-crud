@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import dateToStr from '../../../utils/dateToStr.js';
 
 const Home = () => {
   const posts = useSelector(getAllPosts);
@@ -31,7 +32,8 @@ const Home = () => {
                       <strong>Author:</strong> {post.author}
                     </p>
                     <p className="mb-2">
-                      <strong>Published:</strong> {post.publishedDate}
+                      <strong>Published:</strong>{' '}
+                      {dateToStr(post.publishedDate)}
                     </p>
                     <p className="text-muted">{post.shortDescription}</p>
                   </Card.Text>
