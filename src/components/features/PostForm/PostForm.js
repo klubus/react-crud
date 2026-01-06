@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useForm } from 'react-hook-form';
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -13,38 +14,64 @@ const PostForm = ({ action, actionText, ...props }) => {
   const [shortDescription, setShortDescription] = useState(
     props.shortDescription || ''
   );
-  const [content, setContent] = useState(props.content || '');
+  const [content, setContent] = useState('');
+  const [contentError, setContentError] = useState();
+  const [dateError, setDateError] = useState();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    action({
-      title,
-      author,
-      publishedDate,
-      shortDescription,
-      content,
-    });
+  const isEmpty = content.replace(/<(.|\n)*?>/g, '').trim() === '';
+
+  const handleSubmit = () => {
+    setContentError(isEmpty);
+    setDateError(!publishedDate);
+
+    if (!isEmpty && publishedDate) {
+      action({
+        title,
+        author,
+        publishedDate,
+        shortDescription,
+        content,
+      });
+    }
   };
 
+  const {
+    register,
+    handleSubmit: validate,
+    formState: { errors },
+  } = useForm();
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicTitle">
+    <Form onSubmit={validate(handleSubmit)}>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Title</Form.Label>
         <Form.Control
-          type="text"
+          {...register('title', { required: true, minLength: 3 })}
           value={title}
-          placeholder="Enter title"
           onChange={(e) => setTitle(e.target.value)}
+          type="text"
+          placeholder="Enter title"
         />
+        {errors.title && (
+          <small className="d-block form-text text-danger mt-2">
+            Title is too short (min is 3)
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicAuthor">
         <Form.Label>Author</Form.Label>
         <Form.Control
+          {...register('author', { required: true, minLength: 3 })}
           type="text"
           value={author}
           placeholder="Enter author"
           onChange={(e) => setAuthor(e.target.value)}
         />
+        {errors.author && (
+          <small className="d-block form-text text-danger mt-2">
+            Author is too short (min is 3)
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPublished">
         <Form.Label>Published</Form.Label>
@@ -53,20 +80,36 @@ const PostForm = ({ action, actionText, ...props }) => {
           selected={publishedDate}
           onChange={(date) => setPublishedDate(date)}
         />
+        {dateError && (
+          <small className="d-block form-text text-danger mt-2">
+            Published date can't be empty
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicShortDescription">
         <Form.Label>Short description</Form.Label>
         <Form.Control
+          {...register('shortDescription', { required: true, minLength: 20 })}
           as="textarea"
           rows={3}
           placeholder="Leave a comment here"
           value={shortDescription}
           onChange={(e) => setShortDescription(e.target.value)}
         />
+        {errors.shortDescription && (
+          <small className="d-block form-text text-danger mt-2">
+            Short description is too short (min is 20){' '}
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicMainComment">
         <Form.Label>Main content</Form.Label>
         <ReactQuill theme="snow" value={content} onChange={setContent} />
+        {contentError && (
+          <small className="d-block form-text text-danger mt-2">
+            Content can't be empty
+          </small>
+        )}
       </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
